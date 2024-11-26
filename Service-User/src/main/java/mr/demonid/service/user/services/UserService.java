@@ -35,4 +35,12 @@ public class UserService {
     public List<User> getAllUsers() throws UserException {
         return userRepository.findAllUsers();
     }
+
+    public User getUserById(Long userId) {
+        Optional<User> userOptional = userRepository.findUserById(userId);
+        if (userOptional.isEmpty()) {
+            throw new NotFoundException();
+        }
+        return userOptional.get();
+    }
 }

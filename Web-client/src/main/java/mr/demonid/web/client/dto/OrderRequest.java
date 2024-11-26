@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+/**
+ * Запрос на покупку товара
+ */
 @Data
 @AllArgsConstructor
 public class OrderRequest {

@@ -5,6 +5,7 @@ import mr.demonid.service.user.domain.Account;
 import mr.demonid.service.user.domain.Role;
 import mr.demonid.service.user.domain.User;
 import mr.demonid.service.user.dto.PaymentRequest;
+import mr.demonid.service.user.dto.UserInfo;
 import mr.demonid.service.user.dto.UserPayInfo;
 import mr.demonid.service.user.services.RoleService;
 import mr.demonid.service.user.services.TransferService;
@@ -45,6 +46,23 @@ public class ApiController {
         return ResponseEntity.ok().build();
     }
 
+
+    @GetMapping("/get-all-users")
+    public ResponseEntity<List<UserInfo>> getAllUsersInfo(){
+        try {
+            List<User> users = userService.getAllUsers();
+            List<UserInfo> res = users.stream().map(e -> new UserInfo(e.getId(), e.getUsername(), e.getPaymentAccount().getAmount())).toList();
+            return ResponseEntity.ok(res);
+        } catch (Exception e) {
+            return ResponseEntity.ok().body(new ArrayList<>());
+        }
+    }
+
+    @GetMapping("get-user/{id}")
+    public ResponseEntity<UserInfo> getUser(@PathVariable Long id){
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(new UserInfo(user.getId(), user.getUsername(), user.getPaymentAccount().getAmount()));
+    }
 
     /**
      * Тестовый эндпоинт.
